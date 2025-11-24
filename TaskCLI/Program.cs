@@ -2,6 +2,7 @@
 // and needs to be modified later
 
 using Terminal.Gui;
+using Terminal.Gui.Graphs;
 
 class Program
 { 
@@ -15,7 +16,7 @@ class Program
         Colors.Base.Normal = Application.Driver.MakeAttribute(Color.White, Color.Black);
 
         var top = Application.Top;
-        var win = new Window("TaskCLI - "+ day.ToString("dddd"))
+        var win = new Window("TaskCLI")
         {
             X = 0,
             Y = 1,
@@ -43,10 +44,17 @@ class Program
                 }) 
             }),
         });
-        var label = new Label("Welcome to Terminal GUI!")
+        var dayOfTheWeek = new Label(day.ToString("dddd") + " - " + day.ToString("M"))
         {
             X = Pos.Center(),
             Y = 1
+        };
+        var breakLine = new LineView()
+        {
+            X = 0,
+            Y = 2,
+            Width = Dim.Fill(),
+            Orientation = Orientation.Horizontal
         };
         var button = new Button("OK")
         {
@@ -58,7 +66,7 @@ class Program
             MessageBox.Query("Info", "Button clicked", "Ok");
         };
 
-        win.Add(label, button);
+        win.Add(dayOfTheWeek, breakLine, button);
         top.Add(menu);
         top.Add(win);
 
