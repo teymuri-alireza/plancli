@@ -4,20 +4,12 @@
 using Terminal.Gui;
 using Terminal.Gui.Graphs;
 using TaskCLI.Models;
+using System.Data.Common;
 
 class Program
 {
-    // make tasksWindow accessible from NewTask
-    static Label? tasksWindow;
-    // helper to refresh the tasks label from the database
-    public static void RefreshTasksWindow(DatabaseController db)
-    {
-        var tasksText = string.Join("\n", db.Items.Select(t => $"{t.Title} - {t.Description}"));
-        if (tasksWindow != null) 
-        { 
-            tasksWindow.Text = tasksText; 
-        }
-    }
+    // make variable accessible
+    static FrameView? container;
     static void Main(string[] args)
     {
         var day = DateTime.Now;
@@ -33,11 +25,11 @@ class Program
             X = 0,
             Y = 1,
             Width = Dim.Fill(),
-            Height = Dim.Fill()
-        };
-        win.ColorScheme = new()
-        {
-            Normal = Application.Driver.MakeAttribute(Color.White, Color.Black),
+            Height = Dim.Fill(),
+            ColorScheme = new ColorScheme()
+            {
+                Normal = Application.Driver.MakeAttribute(Color.White, Color.Black),
+            }
         };
         var menu = new MenuBar(
         [
@@ -61,23 +53,17 @@ class Program
             X = Pos.Center(),
             Y = 1
         };
-        var breakLine = new LineView()
-        {
-            X = 0,
-            Y = 2,
-            Width = Dim.Fill(),
-            Orientation = Orientation.Horizontal
-        };
-        string tasksText = string.Join("\n", db.Items.Select(t => $"{t.Title} - {t.Description}"));
-        tasksWindow = new Label(tasksText)
+        container = new FrameView("Tasks")
         {
             X = 1,
-            Y = 4,
+            Y = 3,
             Width = Dim.Fill(),
             Height = Dim.Fill()
         };
+        // build checkbox
+        BuildCheckBoxList(db);
 
-        win.Add(dayOfTheWeek, breakLine, tasksWindow);
+        win.Add(dayOfTheWeek,  container);
         top.Add(menu);
         top.Add(win);
 
@@ -119,6 +105,15 @@ class Program
         var ok = new Button("OK");
         ok.Clicked += () =>
         {
+            // inputs can not be null
+            if (
+                string.IsNullOrWhiteSpace(titleInput.Text.ToString()) || 
+                string.IsNullOrWhiteSpace(descriptionInput.Text.ToString())
+                )
+            {
+                MessageBox.ErrorQuery("Validation", "Title and Description are required.", "OK");
+                return;
+            }
             var newTask = new TodoItem
             {
                 Title = titleInput.Text.ToString(),
@@ -127,8 +122,8 @@ class Program
             // logic to save into database
             db.Items.Add(newTask);
             db.Save();
-            // refresh UI so tasksWindow shows the new item
-            RefreshTasksWindow(db);
+            // refresh UI
+            BuildCheckBoxList(db);
 
             Application.RequestStop(); // close dialog
         };
@@ -140,5 +135,40 @@ class Program
         dialog.AddButton(cancel);
 
         Application.Run(dialog);
+    }
+
+    public static void BuildCheckBoxList(DatabaseController db)
+    {
+        var doneColor = new ColorScheme()
+        {
+            Normal = Application.Driver.MakeAttribute(Color.DarkGray, Color.Black),
+            Focus = Application.Driver.MakeAttribute(Color.DarkGray, Color.Black),
+        };
+        var notDoneColor = new ColorScheme()
+        {
+            Normal = Application.Driver.MakeAttribute(Color.White, Color.Black),
+            Focus = Application.Driver.MakeAttribute(Color.White, Color.Black),
+        };
+
+        container?.RemoveAll();
+
+        int y = 0;
+        foreach (var task in db.Items)
+        {
+            var checkbox = new CheckBox($" {task.Title} - {task.Description}", task.IsDone)
+            {
+                X = 1,
+                Y = y++,
+                ColorScheme = task.IsDone ? doneColor : notDoneColor
+            };
+            checkbox.Toggled += (prev) =>
+            {
+                task.IsDone = checkbox.Checked;
+                checkbox.ColorScheme = checkbox.Checked ? doneColor : notDoneColor;
+                db.Save();
+            };
+
+            container?.Add(checkbox);
+        }
     }
 }
