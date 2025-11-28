@@ -3,16 +3,17 @@ A cross-platform terminal-based to-do list application written in C#, built usin
 
 # Features
 
-- JSON-based local database for storing tasks.
-- Clean, minimal terminal interface.
-- Cross-platform support (Windows, Linux, macOS).
+1. JSON-based local database for storing tasks.
+2. Clean, minimal terminal interface.
+3. Cross-platform support (Windows, Linux, macOS).
+4. Custom themes for light and dark modes
 
 # Planned Features
 
-1. Evaluate LiteDB instead of JSON for storage.
-2. Add deadline column to tasks table.
-3. Add theme customization menu.
-4. Publish standalone executable files
+- [ ] Evaluate LiteDB instead of JSON for storage.
+- [ ] Add deadline column to tasks table.
+- [ ] Publish standalone executable files
+- [x] Add theme customization menu.
 
 # Contribution
 
