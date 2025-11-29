@@ -5,6 +5,7 @@ using Terminal.Gui;
 using TaskCLI.Models;
 using System.Text.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks.Sources;
 
 class Program
 {
@@ -45,7 +46,11 @@ class Program
                 new("_New", "", () =>
                 {
                     NewTask(db, win);
-                }) 
+                }),
+                new("_Reset", "", () =>
+                {
+                    ResetTask(db, win);
+                }),
             }),
             new("_Theme", new MenuItem[]
             {
@@ -188,6 +193,16 @@ class Program
 
             container?.Add(checkbox);
         }
+    }
+
+    public static void ResetTask(DatabaseController db, Window window)
+    {
+        string fileName = "tasks.json";
+        File.WriteAllText(fileName, "[]");
+        // Refresh UI
+        db.Load();
+        db.Save();
+        BuildCheckBoxList(db, window);
     }
 
     public static void ChangeTheme(string themeColor, Window window, DatabaseController db)
