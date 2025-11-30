@@ -19,4 +19,4 @@ A cross-platform terminal-based to-do list application written in C#, built usin
 
 Contributions are welcome!
 
-If you have an idea or improvement open an issue or submit a pull request using **Conventional Commits** for commit messages..
+If you have an idea or improvement open an issue or submit a pull request using **Conventional Commits** for commit messages.
