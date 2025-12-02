@@ -142,6 +142,7 @@ class Program
             }
             var newTask = new TodoItem
             {
+                Id = GenerateNextID(db),
                 Title = titleValue,
                 Description = !string.IsNullOrWhiteSpace(descriptionValue) ? descriptionValue : ""
             };
@@ -240,6 +241,11 @@ class Program
         var options = new JsonSerializerOptions { WriteIndented = true };
         string jsonString = JsonSerializer.Serialize(newTheme, options);
         File.WriteAllText(fileName, jsonString);
+    }
+
+    public static int GenerateNextID(DatabaseController db)
+    {
+        return db.Items.Count == 0 ? 1 : db.Items.Max(t => t.Id) + 1;
     }
 
     public static string GetUserSetting()

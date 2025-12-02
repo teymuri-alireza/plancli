@@ -49,6 +49,7 @@ class Arguments
 
         db.Items.Add(new TodoItem
         {
+            Id = Program.GenerateNextID(db),
             Title = title,
         });
 
