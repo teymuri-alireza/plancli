@@ -33,4 +33,18 @@ public class DatabaseController
 
         File.WriteAllText(_filePath, json);
     }
+
+    public void Delete(TodoItem item)
+    {
+        if (item == null) return;
+
+        var removed = Items.Remove(item);
+
+        if (!removed)
+        {
+            Items.RemoveAll(x => x.Id == item.Id);
+        }
+
+        Save();
+    }
 }
