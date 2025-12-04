@@ -43,11 +43,14 @@ class Arguments
             Console.WriteLine("Task list is empty");
             return;
         }
-
+        var lines = new string('-', 15);
+        Console.WriteLine($"+ {lines} +");
+        
         foreach (var task in db.Items)
         {
             var mark = task.IsDone ? "[x]" : "[ ]";
             Console.WriteLine($"{mark} {task.Id}. {task.Title}");
+            Console.WriteLine($"+ {lines} +");
         }
     }
 
@@ -67,7 +70,8 @@ class Arguments
         });
 
         db.Save();
-        Console.WriteLine("Task added");
+        Console.WriteLine("Task added\n");
+        ListTasks(db);
     }
 
     static void CheckTheTask(string[] args, DatabaseController db)
@@ -82,7 +86,7 @@ class Arguments
             var taskToDelete = db.Items.FirstOrDefault(t => t.Id == int.Parse(args[1]));
             if (!string.IsNullOrEmpty(taskToDelete?.Id.ToString()))
             {
-                taskToDelete.IsDone = true;
+                taskToDelete.IsDone = !taskToDelete.IsDone;
                 db.Save();
                 ListTasks(db);
             }
