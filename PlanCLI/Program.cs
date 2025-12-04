@@ -190,21 +190,104 @@ class Program
         int y = 0;
         foreach (var task in db.Items)
         {
-            var checkbox = new CheckBox($" {task.Title} {task.Description}", task.IsDone)
+            // Use a plain Label instead of a CheckBox so no glyph is drawn.
+            var itemLabel = new Label($"{task.Title} {task.Description}")
             {
-                X = 1,
-                Y = y++,
-                ColorScheme = task.IsDone ? doneColor : notDoneColor // color changes based on IsDone
-            };
-            checkbox.Toggled += (prev) =>
-            {
-                task.IsDone = checkbox.Checked;
-                checkbox.ColorScheme = checkbox.Checked ? doneColor : notDoneColor;
-                db.Save();
+            X = 1,
+            Y = y++,
+            ColorScheme = task.IsDone ? doneColor : notDoneColor,
+            CanFocus = true // allow keyboard focus so Enter can open edit
             };
 
-            container?.Add(checkbox);
+            // Open edit dialog on Enter key
+            itemLabel.KeyPress += (kb) =>
+            {
+            if (kb.KeyEvent.Key == Key.Enter)
+            {
+                OpenEditTaskDialog(task, db, window);
+                kb.Handled = true;
+            }
+            };
+
+            // Open edit dialog on mouse click (left button)
+            itemLabel.MouseClick += (me) =>
+            {
+            if ((me.MouseEvent.Flags & MouseFlags.Button1Clicked) != 0)
+            {
+                OpenEditTaskDialog(task, db, window);
+            }
+            };
+
+            container?.Add(itemLabel);
         }
+    }
+
+    public static void OpenEditTaskDialog(TodoItem task, DatabaseController db, Window window)
+    {
+        var dialog = new Dialog("Edit Task", 60, 12);
+        
+        var titleLabel = new Label("Title:")
+        {
+            X = 1,
+            Y = 1,
+        };
+        var titleInput = new TextField(task.Title)
+        {
+            X = Pos.Right(titleLabel) + 10,
+            Y = Pos.Top(titleLabel),
+            Width = 40
+        };
+        var descriptionLabel = new Label("Description:")
+        {
+            X = 1,
+            Y = 3,
+        };
+        var descriptionInput = new TextField(task.Description)
+        {
+            X = Pos.Right(descriptionLabel) + 4,
+            Y = Pos.Top(descriptionLabel),
+            Width = 40
+        };
+        
+        var isDoneCheckBox = new CheckBox("Mark as Done", task.IsDone)
+        {
+            X = 1,
+            Y = 5,
+        };
+        isDoneCheckBox.KeyPress += (kb) =>
+        {
+            if (kb.KeyEvent.Key == Key.Enter)
+            {
+                isDoneCheckBox = new CheckBox("Mark as Done", task.IsDone)
+                {
+                    X = 1,
+                    Y = 5,
+                };
+            }
+        };
+
+        dialog.Add(titleLabel, titleInput);
+        dialog.Add(descriptionLabel, descriptionInput);
+        dialog.Add(isDoneCheckBox);
+
+        var save = new Button("Save");
+        save.Clicked += () =>
+        {
+            task.Title = titleInput.Text.ToString();
+            task.Description = descriptionInput.Text.ToString();
+            task.IsDone = isDoneCheckBox.Checked;
+            db.Save();
+            BuildCheckBoxList(db, window);
+            Application.RequestStop();
+        };
+
+        var cancel = new Button("Cancel");
+        cancel.Clicked += () => Application.RequestStop();
+
+        dialog.AddButton(save);
+        dialog.AddButton(cancel);
+
+        Application.Run(dialog);
     }
 
     public static void ResetTask(DatabaseController db, Window window)
