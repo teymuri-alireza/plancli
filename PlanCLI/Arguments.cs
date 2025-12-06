@@ -1,3 +1,5 @@
+using System.Text.Json;
+using PlanCLI;
 using PlanCLI.Models;
 
 class Arguments
@@ -10,131 +12,53 @@ class Arguments
             case "--help":
                 PrintHelp();
                 break;
-            case "-l":
-            case "--list":
-                ListTasks(db);
+            case "-m":
+            case "--mode":
+                ModeHandler(args);
                 break;
-            case "-n":
-            case "--new":
-                AddNewTask(args, db);
-                break;
-            case "-c":
-            case "--check":
-                CheckTheTask(args, db);
-                break;
-            case "-d":
-            case "--delete":
-                DeleteTask(args, db);
-                break;
-            case "-r":
-            case "--reset":
-                ResetTask(db);
-                break;
+
             default:
                 Console.WriteLine("Unkown Option.");
                 break;
         }
     }
 
-    static void ListTasks(DatabaseController db)
+    static void ModeHandler(string[] args)
     {
-        if (db.Items.Count == 0)
+        switch (args [1])
         {
-            Console.WriteLine("Task list is empty");
-            return;
-        }
-        var lines = new string('-', 15);
-        Console.WriteLine($"+ {lines} +");
-        
-        foreach (var task in db.Items)
-        {
-            var mark = task.IsDone ? "[x]" : "[ ]";
-            Console.WriteLine($"{mark} {task.Id}. {task.Title}");
-            Console.WriteLine($"+ {lines} +");
+            case "cli":
+                ChangeUserMode("cli");
+                CLImode.Run();
+                break;
+            case "tui":
+                ChangeUserMode("tui");
+                TUImode.Run();
+                break;
+            default:
+                PrintHelp();
+                break;
         }
     }
 
-    static void AddNewTask(string[] args, DatabaseController db)
+    static void ChangeUserMode(string mode)
     {
-        if (args.Length < 2)
-        {
-            Console.WriteLine("Error: missing task title & description.");
-            return;
-        }
-        string title = args[1];
-
-        db.Items.Add(new TodoItem
-        {
-            Id = Program.GenerateNextID(db),
-            Title = title,
-        });
-
-        db.Save();
-        Console.WriteLine("Task added\n");
-        ListTasks(db);
+        var theme = Program.GetUserSetting()[0];
+        var newFile = new UserSetting() { 
+            Theme = theme,
+            Mode = mode 
+            };
+        var fileName = "userSettings.json".ToString();
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string jsonString = JsonSerializer.Serialize(newFile, options);
+        File.WriteAllText(fileName, jsonString);
     }
 
-    static void CheckTheTask(string[] args, DatabaseController db)
-    {
-        if (args.Length < 2)
-        {
-            Console.WriteLine("Error: missing task Id.");
-            return;
-        }
-        try
-        {
-            var taskToDelete = db.Items.FirstOrDefault(t => t.Id == int.Parse(args[1]));
-            if (!string.IsNullOrEmpty(taskToDelete?.Id.ToString()))
-            {
-                taskToDelete.IsDone = !taskToDelete.IsDone;
-                db.Save();
-                ListTasks(db);
-            }
-            else
-            {
-                Console.WriteLine("Error: task Id does not exist.");
-                return;
-            }
-        }
-        catch
-        {
-            Console.WriteLine("Error: task Id is not an integer!");
-            return;
-        }
-    }
-
-    static void DeleteTask(string[] args, DatabaseController db)
-    {
-        if (args.Length < 2)
-        {
-            Console.WriteLine("Error: missing task Id.");
-            return;
-        }
-        var item = db.Items.FirstOrDefault(t => t.Id == int.Parse(args[1]));
-        if (!string.IsNullOrEmpty(item?.Title)) {
-            db.Delete(item);
-            Console.WriteLine("Task deleted successfully.");
-            ListTasks(db);
-        }
-    }
-
-    static void ResetTask(DatabaseController db)
-    {
-        string fileName = "tasks.json";
-        File.WriteAllText(fileName, "[]");
-        db.Load();
-        db.Save();
-        Console.WriteLine("Tasks reset successfully");
-    }
-
-    static void PrintHelp()
+    public static void PrintHelp()
     {
         Console.WriteLine("plancli usage:");
-        Console.WriteLine("  dotnet run             \tRun interactive mode (TUI)");
-        Console.WriteLine("  dotnet run -- -l       \tList tasks");
-        Console.WriteLine("  dotnet run -- -n \"title\"\tAdd new task");
-        Console.WriteLine("  dotnet run -- -c Id      \tcheck a task as complete");
-        Console.WriteLine("  dotnet run -- -d Id      \tdelete a task");
-        Console.WriteLine("  dotnet run -- -r       \tReset tasks list");
+        Console.WriteLine("     dotnet run                 Run in default mode if it's set");
+        Console.WriteLine("     dotnet run -- -m cli       Set default to Command-Line mode (CLI)");
+        Console.WriteLine("     dotnet run -- -m tui       Set default to interactive mode (TUI)");
     }
 }
