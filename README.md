@@ -38,6 +38,14 @@ NOTE: executable files will be created for easier access
 
 NOTE: This application uses .net 8
 
+# Gallery
+
+- CLI mode (left) & TUI mode (right)
+<div>
+    <img width="50%" align="left" src="./images/climode.png">
+    <img width="50%" align="right" src="./images/tuimode.png">
+</div>
+
 # Contribution
 
 Contributions are welcome!
