@@ -84,7 +84,7 @@ class Arguments
         AnsiConsole.MarkupLine("[green]New task added.[/]");
     }
 
-    static void ChangeUserMode(string mode)
+    public static void ChangeUserMode(string mode)
     {
         var theme = Program.GetUserSetting()[0];
         var newFile = new UserSetting() { 
