@@ -45,7 +45,7 @@ public class CLImode
         }
     }
 
-    static void ListTasks(DatabaseController db)
+    public static void ListTasks(DatabaseController db)
     {
         var table = new Table();
         table.AddColumn("Id");
@@ -72,7 +72,7 @@ public class CLImode
         }
     }
 
-    static void AddTask(DatabaseController db)
+    public static void AddTask(DatabaseController db)
     {
         var title = AnsiConsole.Prompt(
             new TextPrompt<string>("[lightskyblue1]Enter task's title:[/] [grey](q for cancel)[/]"));
@@ -95,7 +95,7 @@ public class CLImode
         AnsiConsole.MarkupLine("[green]New task added successfully.[/]");
     }
 
-    static void CompleteTask(DatabaseController db)
+    public static void CompleteTask(DatabaseController db)
     {
         ListTasks(db);
         var choice = AnsiConsole.Prompt(
@@ -123,7 +123,7 @@ public class CLImode
             }
         }
     }
-    static void DeleteTask(DatabaseController db)
+    public static void DeleteTask(DatabaseController db)
     {
         ListTasks(db);
         var choice = AnsiConsole.Prompt(
@@ -150,7 +150,7 @@ public class CLImode
             }
         }
     }
-    static void ResetTasks(DatabaseController db)
+    public static void ResetTasks(DatabaseController db)
     {
         string fileName = "tasks.json";
         File.WriteAllText(fileName, "[]");
