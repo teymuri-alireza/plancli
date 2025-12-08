@@ -1,5 +1,6 @@
 using PlanCLI.Models;
 using Spectre.Console;
+using System.Text.RegularExpressions;
 
 namespace PlanCLI;
 
@@ -50,7 +51,10 @@ public class CLImode
 
     public static void ListTasks(DatabaseController db)
     {
-        var table = new Table();
+        var table = new Table
+        {
+            Border = TableBorder.Rounded
+        };
         table.AddColumn("Id");
         table.AddColumn("Title");
         table.AddColumn("Description");
@@ -78,7 +82,17 @@ public class CLImode
     public static void AddTask(DatabaseController db)
     {
         var title = AnsiConsole.Prompt(
-            new TextPrompt<string>("[lightskyblue1]Enter task's title:[/] [grey](q for cancel)[/]"));
+            new TextPrompt<string>("[lightskyblue1]Enter task's title:[/] [grey](q for cancel)[/]")
+            .Validate(input =>
+            {
+                if (Regex.IsMatch(input, @"[\[\]\(\)/\\]"))
+                {
+                    Console.WriteLine("You can't use: [ ] ( ) \\ /");
+                    return ValidationResult.Error("[red]Invalid characters detected[/]");
+                }
+                return ValidationResult.Success();
+            })
+        );
         if (title == 'q'.ToString())
         {
             return;
