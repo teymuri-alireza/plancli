@@ -14,11 +14,11 @@ public class CLImode
             var option = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title("Choose your action?")
-                    .PageSize(6)
+                    .PageSize(7)
                     .MoreChoicesText("[grey](Move up and down)[/]")
                     .AddChoices(new[] {
                         "List tasks", "Add new", "Complete task",
-                        "Delete task", "Reset tasks", "exit"
+                        "Edit task", "Delete task", "Reset tasks", "exit"
                 }));
             switch (option)
             {
@@ -33,6 +33,9 @@ public class CLImode
                     break;
                 case "Delete task":
                     DeleteTask(db);
+                    break;
+                case "Edit task":
+                    EditTask(db);
                     break;
                 case "Reset tasks":
                     ResetTasks(db);
@@ -122,6 +125,45 @@ public class CLImode
                 AnsiConsole.MarkupLine("[red]Id must be an integer![/]");
             }
         }
+    }
+    public static void EditTask(DatabaseController db)
+    {
+        ListTasks(db);
+        var choice  = AnsiConsole.Prompt(
+            new TextPrompt<string>("[lightskyblue1]Enter task's Id: [/] [grey](empty for cancel)[/]")
+            .AllowEmpty()
+        );
+        if (!string.IsNullOrWhiteSpace(choice))
+        {
+            try
+            {
+                var item = db.Items.FirstOrDefault(t => t.Id == int.Parse(choice));
+                if (!string.IsNullOrEmpty(item?.Title)) {
+                    EditHandler(item, db);
+                    AnsiConsole.MarkupLine($"[green]Task {item.Id} Edited successfully[/]");
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[red]Task not found![/]");
+                }
+            }
+            catch
+            {
+                AnsiConsole.MarkupLine("[red]Id must be an integer![/]");
+            }
+        }
+    }
+    public static void EditHandler(TodoItem item, DatabaseController db)
+    {
+        var newTitle = AnsiConsole.Prompt(
+            new TextPrompt<string?>("[lightskyblue1]Enter new title:[/]")
+            .DefaultValue(item.Title?.ToString()));
+        var newDescription = AnsiConsole.Prompt(
+            new TextPrompt<string?>("[lightskyblue1]Enter new desciption:[/]")
+            .AllowEmpty());
+        item.Title = newTitle;
+        item.Description = newDescription;
+        db.Save();
     }
     public static void DeleteTask(DatabaseController db)
     {

@@ -29,6 +29,10 @@ class Arguments
             case "--check":
                 CLImode.CompleteTask(db);
                 break;
+            case "-e":
+            case "--edit":
+                CLImode.EditTask(db);
+                break;
             case "-d":
             case "--delete":
                 CLImode.DeleteTask(db);
@@ -107,6 +111,7 @@ class Arguments
         Console.WriteLine("     dotnet run -- -l           Print the task list");
         Console.WriteLine("     dotnet run -- -a \"title\"   Add new task");
         Console.WriteLine("     dotnet run -- -c           Complete a task");
+        Console.WriteLine("     dotnet run -- -e           Edit a task");
         Console.WriteLine("     dotnet run -- -d           Delete a task");
         Console.WriteLine("     dotnet run -- -r           Reset tasks list");
     }
