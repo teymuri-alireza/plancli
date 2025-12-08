@@ -9,7 +9,7 @@ class TUImode
     public static void Run()
     {
         var day = DateTime.Now;
-        var db = new DatabaseController("tasks.json");
+        var db = new DatabaseController(Program.taskPath);
 
         Application.Init();
 
@@ -290,7 +290,7 @@ class TUImode
             Theme = themeColor,
             Mode = mode 
             };
-        var fileName = "userSettings.json".ToString();
+        var fileName = Program.settingPath.ToString();
         var options = new JsonSerializerOptions { WriteIndented = true };
         string jsonString = JsonSerializer.Serialize(newFile, options);
         File.WriteAllText(fileName, jsonString);
@@ -356,7 +356,7 @@ class TUImode
 
     public static void ResetTask(DatabaseController db, Window window)
     {
-        string fileName = "tasks.json";
+        string fileName = Program.taskPath;
         File.WriteAllText(fileName, "[]");
         // Refresh UI
         db.Load();

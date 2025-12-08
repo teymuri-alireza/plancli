@@ -91,7 +91,7 @@ class Arguments
             Theme = theme,
             Mode = mode 
             };
-        var fileName = "userSettings.json".ToString();
+        var fileName = Program.settingPath.ToString();
         var options = new JsonSerializerOptions { WriteIndented = true };
         string jsonString = JsonSerializer.Serialize(newFile, options);
         File.WriteAllText(fileName, jsonString);

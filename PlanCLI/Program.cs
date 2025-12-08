@@ -8,17 +8,22 @@ using PlanCLI;
 
 class Program
 {
+    public static string configDir = GetConfigDirectory();
+    public static string taskPath = Path.Combine(configDir, "tasks.json");
+    public static string settingPath = Path.Combine(configDir, "userSettings.json");
     static void Main(string[] args)
     {
         // manage settings & database file if it doesn't exist
-        if (!File.Exists("tasks.json")) { 
-            File.WriteAllText("tasks.json", "[]");
-            }
-        if (!File.Exists("userSettings.json")) { 
-            File.WriteAllText("userSettings.json", "{\"Theme\": \"dark\", \"Mode\":\"not set\"}");
-            }
+        Directory.CreateDirectory(configDir);
+        
+        if (!File.Exists(taskPath)) {
+            File.WriteAllText(taskPath, "[]");
+        }
+        if (!File.Exists(settingPath)) {
+            File.WriteAllText(settingPath, "{\"Theme\": \"dark\", \"Mode\":\"not set\"}");
+        }
 
-        var db = new DatabaseController("tasks.json");
+        var db = new DatabaseController(taskPath);
 
         // handle arguments
         if (args.Length > 0)
@@ -78,6 +83,21 @@ class Program
             }
         }
     }
+    public static string GetConfigDirectory()
+    {
+        string basePath;
+
+        if (OperatingSystem.IsWindows())
+        {
+            basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            return Path.Combine(basePath, "PlanCLI");
+        }
+        else
+        {
+            basePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            return Path.Combine(basePath, ".plancli");
+        }
+    }
 
     public static int GenerateNextID(DatabaseController db)
     {
@@ -88,7 +108,7 @@ class Program
     public static List<string> GetUserSetting()
     {
         // returns user's theme & app's mode
-        var fileName = "userSettings.json".ToString();
+        var fileName = settingPath.ToString();
         string jsonString = File.ReadAllText(fileName);
         UserSetting? usersettings = JsonSerializer.Deserialize<UserSetting>(jsonString)!;
         List<string> results = [usersettings.Theme, usersettings.Mode];

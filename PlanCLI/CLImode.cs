@@ -7,7 +7,7 @@ public class CLImode
 {
     public static void Run()
     {
-        var db = new DatabaseController("tasks.json");
+        var db = new DatabaseController(Program.taskPath);
 
         while (true)
         {
@@ -152,7 +152,7 @@ public class CLImode
     }
     public static void ResetTasks(DatabaseController db)
     {
-        string fileName = "tasks.json";
+        string fileName = Program.taskPath;
         File.WriteAllText(fileName, "[]");
         db.Load();
         db.Save();
