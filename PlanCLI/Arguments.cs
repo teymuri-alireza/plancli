@@ -41,6 +41,10 @@ class Arguments
             case "--reset":
                 CLImode.ResetTasks(db);
                 break;
+            case "-v":
+            case "--version":
+                PrintVersion();
+                break;
             default:
                 Console.WriteLine("Unkown Option.");
                 break;
@@ -109,6 +113,11 @@ class Arguments
         File.WriteAllText(fileName, jsonString);
     }
 
+    static void PrintVersion()
+    {
+        Console.WriteLine(Program.Version);
+    }
+
     public static void PrintHelp()
     {
         AnsiConsole.MarkupLine("[green]plancli usage:[/]");
@@ -122,5 +131,6 @@ class Arguments
         Console.WriteLine("     dotnet run -- -e           Edit a task");
         Console.WriteLine("     dotnet run -- -d           Delete a task");
         Console.WriteLine("     dotnet run -- -r           Reset tasks list");
+        Console.WriteLine("     dotnet run -- -v           Prints plancli version");
     }
 }

@@ -8,6 +8,7 @@ using PlanCLI;
 
 class Program
 {
+    public const string Version = "0.0.1";
     public static string configDir = GetConfigDirectory();
     public static string taskPath = Path.Combine(configDir, "tasks.json");
     public static string settingPath = Path.Combine(configDir, "userSettings.json");
