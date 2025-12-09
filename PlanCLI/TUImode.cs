@@ -274,7 +274,7 @@ class TUImode
 
     public static void OpenEditTaskDialog(TodoItem task, DatabaseController db, Window window)
     {
-        var dialog = new Dialog("Edit Task", 60, 14);
+        var dialog = new Dialog("Edit Task", 60, 16);
 
         var titleLabel = new Label("Title:")
         {
@@ -298,6 +298,33 @@ class TUImode
             Y = Pos.Top(descriptionLabel),
             Width = 40
         };
+        string btnText = "Mark as done (press space)";
+        if (task.IsDone)
+        {
+            btnText = "Mark as Undone (press space)";
+        }
+        var isDoneCheckBox = new CheckBox(btnText, task.IsDone)
+        {
+            X = 1,
+            Y = 5,
+        };
+        isDoneCheckBox.KeyPress += (kb) =>
+        {
+            if (kb.KeyEvent.Key == Key.Space)
+            {
+                if (isDoneCheckBox.Text == btnText)
+                {
+                    isDoneCheckBox.Text = btnText;
+                }
+                else
+                {
+                    isDoneCheckBox.Text = btnText;
+                }
+                isDoneCheckBox.Checked = !isDoneCheckBox.Checked;
+                kb.Handled = true;
+            }
+        };
+
         bool checkDateValue = true;
         if (task.Date == null)
         {
@@ -306,13 +333,13 @@ class TUImode
         var checkDate = new CheckBox("Enable deadline", checkDateValue)
         {
             X = 1,
-            Y = 5,
+            Y = 7,
         };
         string dateLabelText = "Date: (DD/MM/YYYY)";
         var dateLabel = new Label(dateLabelText)
         {
             X = 1,
-            Y = 7
+            Y = 9
         };
         // align all text inputs
         int gap = 60 - dateLabelText.Length - 19;
@@ -325,6 +352,7 @@ class TUImode
 
         dialog.Add(titleLabel, titleInput);
         dialog.Add(descriptionLabel, descriptionInput);
+        dialog.Add(isDoneCheckBox);
         dialog.Add(checkDate);
         dialog.Add(dateLabel, dateInput);
 
@@ -337,12 +365,17 @@ class TUImode
         }
         checkDate.KeyPress += (kb) =>
         {
+            if (kb.KeyEvent.Key == Key.Space)
+            {
+                kb.Handled = true; // Prevent Space from toggling the checkbox
+                return;
+            }
             if (kb.KeyEvent.Key == Key.Enter)
             {
                 if (dateLabel.Y.Equals(Pos.At(20)))
                 {
-                    dateLabel.Y = 7;
-                    dateInput.Y = 7;
+                    dateLabel.Y = 9;
+                    dateInput.Y = 9;
                     checkDate.Checked = true;
                     checkDate.Text = "Disable deadline";
                     dateLabel.Enabled = true;
@@ -395,8 +428,9 @@ class TUImode
             {
                 newDate = null;
             }
-            task.Title = titleInput.Text.ToString();;
-            task.Description = descriptionInput.Text.ToString();;
+            task.Title = titleInput.Text.ToString();
+            task.Description = descriptionInput.Text.ToString();
+            task.IsDone = isDoneCheckBox.Checked;
             task.Date = newDate;
             db.Save();
             BuildCheckBoxList(db, window);
