@@ -1,0 +1,36 @@
+.navbar {
+    justify-content: center;
+    font-size: 18px;
+}
+.main-div {
+    justify-items: center;
+    padding-top: 150px;
+}
+.main-h1 {
+    font-size: 85px;
+    font-family: 'Newsreader';
+    text-decoration: underline;
+}
+.main-p1 {
+    padding-top: 30px;
+    margin-bottom: -0.5px;
+}
+.footer-a {
+    color: rgba(128, 128, 128, 0.733);
+    font-size: 18px;
+}
+@media screen and (max-width:800px) {
+    .navbar {
+        font-size: 16px;
+    }
+    .main-div {
+        padding-top: 130px;
+    }
+    .main-h1 {
+        font-size: 65px;
+    }
+    p {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+}

@@ -1,0 +1,40 @@
+.navbar {
+    justify-content: center;
+    font-size: 18px;
+}
+.main-div {
+    justify-items: center;
+    padding-top: 100px;
+}
+.h1-1 {
+    font-size: 45px;
+}
+.h2-1 {
+    font-size: 30px;
+}
+.blue-bg {
+    background-color: #b5e0ff;
+}
+.footer-a {
+    color: rgba(128, 128, 128, 0.733);
+    font-size: 18px;
+}
+@media screen and (max-width:800px) {
+    .navbar {
+        font-size: 16px;
+    }
+    .main-div {
+        padding-top: 80px;
+        padding-bottom: 70px;
+    }
+    .h1-1 {
+        font-size: 35px;
+    }
+    .h2-1 {
+        font-size: 25px;
+    }
+    h1, h2, p {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+}
