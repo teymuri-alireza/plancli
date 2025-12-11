@@ -219,7 +219,7 @@ class TUImode
         // getting current window colors
         var windowBackgroundColor = window.GetNormalColor().Background;
         var windowForegroundColor = window.GetNormalColor().Foreground;
-        
+        // color scheme for done tasks
         var doneColor = new ColorScheme()
         {
             Normal = Application.Driver.MakeAttribute(Color.DarkGray, windowBackgroundColor),
@@ -227,6 +227,7 @@ class TUImode
             Focus = Application.Driver.MakeAttribute(Color.BrightYellow, windowBackgroundColor),
             HotFocus = Application.Driver.MakeAttribute(Color.BrightYellow, windowBackgroundColor),
         };
+        // color scheme for undone tasks
         var notDoneColor = new ColorScheme()
         {
             Normal = Application.Driver.MakeAttribute(windowForegroundColor, windowBackgroundColor),
@@ -234,20 +235,55 @@ class TUImode
             Focus = Application.Driver.MakeAttribute(Color.BrightYellow, windowBackgroundColor),
             HotFocus = Application.Driver.MakeAttribute(Color.BrightYellow, windowBackgroundColor),
         };
+        // color scheme for overdue tasks
+        var doneColorOverDue = new ColorScheme()
+        {
+            Normal = Application.Driver.MakeAttribute(Color.Red, windowBackgroundColor),
+            HotNormal = Application.Driver.MakeAttribute(Color.Red, windowBackgroundColor),
+            Focus = Application.Driver.MakeAttribute(Color.BrightYellow, windowBackgroundColor),
+            HotFocus = Application.Driver.MakeAttribute(Color.BrightYellow, windowBackgroundColor),
+        };
 
         container?.RemoveAll();
+        // create an instance of current day to compare
+        var fullDay = DateTime.Now;
+        var day = new DateOnly(fullDay.Year, fullDay.Month, fullDay.Day);
 
         int y = 0;
         foreach (var task in db.Items)
         {
             // Use a plain Label instead of a CheckBox so no glyph is drawn.
-            var itemLabel = new Label($"{task.Title} {task.Description} {task.Date}")
+            var itemLabel = new Label();
+            if (task.IsDone)
             {
-                X = 1,
-                Y = y++,
-                ColorScheme = task.IsDone ? doneColor : notDoneColor,
-                CanFocus = true // allow keyboard focus so Enter can open edit
-            };
+                itemLabel = new Label($"{task.Title} {task.Description} {task.Date}")
+                {
+                    X = 1,
+                    Y = y++,
+                    ColorScheme = doneColor,
+                    CanFocus = true // allow keyboard focus so Enter can open edit
+                };
+            }
+            else if (task.Date < day)
+            {
+                itemLabel = new Label($"{task.Title} {task.Description} {task.Date}")
+                {
+                    X = 1,
+                    Y = y++,
+                    ColorScheme = doneColorOverDue,
+                    CanFocus = true // allow keyboard focus so Enter can open edit
+                };
+            }
+            else
+            {
+                itemLabel = new Label($"{task.Title} {task.Description} {task.Date}")
+                {
+                    X = 1,
+                    Y = y++,
+                    ColorScheme = notDoneColor,
+                    CanFocus = true // allow keyboard focus so Enter can open edit
+                };
+            }
 
             // Open edit dialog on Enter key
             itemLabel.KeyPress += (kb) =>
@@ -343,12 +379,26 @@ class TUImode
         };
         // align all text inputs
         int gap = 60 - dateLabelText.Length - 19;
-        var dateInput = new DateField()
+        var dateInput = new DateField();
+        if (task.Date.HasValue)
         {
-            X = Pos.Right(dateLabel) + gap,
-            Y = Pos.Top(dateLabel),
-            Date = DateTime.Now
-        };
+            var value = task.Date.Value;
+            dateInput = new DateField()
+            {
+                X = Pos.Right(dateLabel) + gap,
+                Y = Pos.Top(dateLabel),
+                Date = new DateTime(value.Year, value.Month, value.Day)
+            };
+        }
+        else
+        {
+            dateInput = new DateField()
+            {
+                X = Pos.Right(dateLabel) + gap,
+                Y = Pos.Top(dateLabel),
+                Date = DateTime.Now
+            };    
+        }
 
         dialog.Add(titleLabel, titleInput);
         dialog.Add(descriptionLabel, descriptionInput);
