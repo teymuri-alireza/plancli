@@ -73,15 +73,44 @@ public class CLImode
         }
         else
         {
+            // create an instance of current day to compare
+            var fullDay = DateTime.Now;
+            var day = new DateOnly(fullDay.Year, fullDay.Month, fullDay.Day);
+
             foreach (var task in db.Items)
             {
-                table.AddRow(
-                    task.Id.ToString(),
-                    !string.IsNullOrEmpty(task.Title) ? task.Title : "",
-                    !string.IsNullOrEmpty(task.Description) ? task.Description : "",
-                    task.Date.ToString() ?? "",
-                    task.IsDone ? "[green]✓[/]" : "[red]x[/]"
-                );
+                // print the done tasks in grey
+                if (task.IsDone)
+                {
+                    table.AddRow(
+                        $"[grey]{task.Id}[/]",
+                        !string.IsNullOrEmpty(task.Title) ? $"[grey]{task.Title}[/]" : "",
+                        !string.IsNullOrEmpty(task.Description) ? $"[grey]{task.Description}[/]" : "",
+                        $"[grey]{task.Date.ToString() ?? ""}[/]",
+                        task.IsDone ? "[green]✓[/]" : "[red]x[/]"
+                    );    
+                }
+                // print the overdue tasks in red
+                else if (task.Date < day)
+                {
+                    table.AddRow(
+                        $"[red]{task.Id}[/]",
+                        !string.IsNullOrEmpty(task.Title) ? $"[red]{task.Title}[/]" : "",
+                        !string.IsNullOrEmpty(task.Description) ? $"[red]{task.Description}[/]" : "",
+                        $"[red]{task.Date.ToString() ?? ""}[/]",
+                        task.IsDone ? "[green]✓[/]" : "[red]x[/]"
+                    );    
+                }
+                else
+                {
+                    table.AddRow(
+                        task.Id.ToString(),
+                        !string.IsNullOrEmpty(task.Title) ? task.Title : "",
+                        !string.IsNullOrEmpty(task.Description) ? task.Description : "",
+                        task.Date.ToString() ?? "",
+                        task.IsDone ? "[green]✓[/]" : "[red]x[/]"
+                    );  
+                }
             }
             AnsiConsole.Write(table);
         }
