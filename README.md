@@ -30,7 +30,7 @@ sudo chmod +x /usr/bin/plancli
 ```
 4. Verify the installation:
 ```bash
-plancli --help
+plancli --version
 ```
 
 ## Windows
@@ -42,7 +42,7 @@ plancli --help
 5. Click New and add the folder containing plancli.exe.
 6. Verify the installation:
 ```powershell
-plancli --help
+plancli --version
 ```
 
 # Usage
@@ -54,7 +54,7 @@ plancli
 
 You can also check other commands with
 ```bash
-plncli --help
+plancli --help
 ```
 
 # Contribution
