@@ -64,11 +64,11 @@ Contributions are welcome!
 If you have an idea or improvement open an issue or submit a pull request using **Conventional Commits** for commit messages.
 
 
-# Gallery
+<!-- # Gallery
 
 - CLI mode & TUI mode
 
 <div align="left">
     <img width="50%" src="./images/climode.png">
     <img width="50%" src="./images/tuimode.png">
-</div>
+</div> -->
