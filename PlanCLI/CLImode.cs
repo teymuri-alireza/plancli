@@ -139,8 +139,8 @@ public class CLImode
             .AllowEmpty());
 
         var IsDeadline = AnsiConsole.Prompt(new SelectionPrompt<string>()
-            .Title("[lightskyblue1]Do you wan to add deadline?[/]")
-            .AddChoices("yes", "no"));
+            .Title("[lightskyblue1]Do you want to add deadline?[/]")
+            .AddChoices("no", "yes"));
         DateOnly? date = new DateOnly();
         if (IsDeadline == "yes")
         {
@@ -257,8 +257,8 @@ public class CLImode
                 return ValidationResult.Success();
             }));
         var IsDeadline = AnsiConsole.Prompt(new SelectionPrompt<string>()
-            .Title("[lightskyblue1]Do you wan to edit deadline?[/]")
-            .AddChoices("yes", "no", "delete deadline"));
+            .Title("[lightskyblue1]Do you want to edit deadline?[/]")
+            .AddChoices("no", "yes", "delete deadline"));
         var date = new DateOnly();
         if (IsDeadline == "yes")
         {
