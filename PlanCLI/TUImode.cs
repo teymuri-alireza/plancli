@@ -539,24 +539,28 @@ class TUImode
 
     public static void OpenChangeTheme(DatabaseController db, Window window)
     {
-        var dialog = new Dialog("Change Theme", 60, 8);
-        var light = new Button("Light");
-        light.Clicked += () => 
-        {
-            ChangeTheme("light", window, db);
-            Application.RequestStop();
-        };
-        var dark = new Button("Dark");
-        dark.Clicked += () => 
+        var user_theme = Program.GetUserSetting()[0];
+        var user_mode = Program.GetUserSetting()[1];
+        string new_theme;
+        if (user_theme == "light")
         {
             ChangeTheme("dark", window, db);
-            Application.RequestStop();
+            new_theme = "dark";
+        }
+        else
+        {
+            ChangeTheme("light", window, db);
+            new_theme = "light";
+        }
+        var newFile = new UserSetting()
+        {
+            Theme = new_theme,
+            Mode = user_mode
         };
-
-        dialog.AddButton(light);
-        dialog.AddButton(dark);
-
-        Application.Run(dialog);
+        var fileName = Program.settingPath.ToString();
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string jsonString = JsonSerializer.Serialize(newFile, options);
+        File.WriteAllText(fileName, jsonString);
     }
 
     public static void ShowHelp()
