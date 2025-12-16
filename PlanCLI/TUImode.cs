@@ -585,7 +585,8 @@ class TUImode
             Width = Dim.Fill() - 2,
             Height = Dim.Fill() - 3,
             ReadOnly = true,
-            Text = helpMessage
+            Text = helpMessage,
+            Enabled = false
         };
 
         var allright = new Button("Allright");
