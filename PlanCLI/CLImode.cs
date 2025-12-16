@@ -286,6 +286,12 @@ public class CLImode
     }
     public static void DeleteTask(DatabaseController db)
     {
+        // check if task list is empty
+        if (db.Items.Count == 0)
+        {
+            AnsiConsole.MarkupLine("[red]Task list is empty.[/]");
+            return;
+        }
         ListTasks(db);
         var choice = AnsiConsole.Prompt(
             new TextPrompt<string>("[lightskyblue1]Enter task's Id:[/] [grey](empty for cancel)[/]")

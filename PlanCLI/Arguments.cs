@@ -147,8 +147,15 @@ class Arguments
             CLImode.DeleteTask(db);
             return;
         }
+        // check if task list is not empty
+        if (db.Items.Count == 0)
+        {
+            AnsiConsole.MarkupLine("[red]Task list is empty.[/]");
+            return;
+        }
         string Id = args[1];
         var task = db.Items.FirstOrDefault(t => t.Id.ToString() == Id);
+        // check if id doesn't exist
         if (string.IsNullOrWhiteSpace(task?.Title))
         {
             AnsiConsole.MarkupLine($"[red]Task Id {Id} wasn't found![/]");
