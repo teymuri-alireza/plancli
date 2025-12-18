@@ -192,7 +192,7 @@ class Arguments
         AnsiConsole.MarkupLine("[green]Other arguments to handle tasks:[/]");
         Console.WriteLine("     plancli -l           Print the task list");
         Console.WriteLine("     plancli -a \"title\"   Add new task");
-        Console.WriteLine("     plancli -c Id        Complete a task");
+        Console.WriteLine("     plancli -c Id        Check/Uncheck a task");
         Console.WriteLine("     plancli -e Id        Edit a task");
         Console.WriteLine("     plancli -d Id        Delete a task");
         Console.WriteLine("     plancli -r           Reset tasks list");
@@ -204,34 +204,34 @@ class Arguments
     {
         AnsiConsole.MarkupLine("[green]Changin mode:[/]");
         Console.WriteLine("     plancli -m cli           Set default to Command-Line mode (CLI)");
-        Console.WriteLine("     plancli --mode cli       Set default to Command-Line mode (CLI)");
+        Console.WriteLine("     plancli --mode cli       ");
         Console.WriteLine("     plancli -m tui           Set default to interactive mode (TUI)");
-        Console.WriteLine("     plancli --mode tui       Set default to interactive mode (TUI)");
+        Console.WriteLine("     plancli --mode tui       ");
 
         AnsiConsole.MarkupLine("[green]Print list of tasks:[/]");
-        Console.WriteLine("     plancli -l               Print the task list");
-        Console.WriteLine("     plancli --list           Print the task list");
+        Console.WriteLine("     plancli -l               ");
+        Console.WriteLine("     plancli --list           ");
         AnsiConsole.MarkupLine("[green]Add new task:[/]");
-        Console.WriteLine("     plancli -a \"title\"       Add new task");
-        Console.WriteLine("     plancli --add \"title\"    Add new task");
-        Console.WriteLine("     plancli -a               Prompt for a task title to add new");
-        AnsiConsole.MarkupLine("[green]Complete a task:[/]");
-        Console.WriteLine("     plancli -c Id            Complete a task");
-        Console.WriteLine("     plancli --check Id       Complete a task");
-        Console.WriteLine("     plancli -c               Prompt for a task Id to check");
+        Console.WriteLine("     plancli -a \"title\"       ");
+        Console.WriteLine("     plancli --add \"title\"    ");
+        Console.WriteLine("     plancli -a               Prompts for a task title");
+        AnsiConsole.MarkupLine("[green]Check or Uncheck a task:[/]");
+        Console.WriteLine("     plancli -c Id            ");
+        Console.WriteLine("     plancli --check Id       ");
+        Console.WriteLine("     plancli -c               Prompts for a task Id");
         AnsiConsole.MarkupLine("[green]Edit a task:[/]");
-        Console.WriteLine("     plancli -e Id            Edit a task");
-        Console.WriteLine("     plancli --edit Id        Edit a task");
-        Console.WriteLine("     plancli -e               Prompt for a task Id to edit");
+        Console.WriteLine("     plancli -e Id            ");
+        Console.WriteLine("     plancli --edit Id        ");
+        Console.WriteLine("     plancli -e               Prompts for a task Id");
         AnsiConsole.MarkupLine("[green]Delete a task:[/]");
-        Console.WriteLine("     plancli -d Id            Delete a task");
-        Console.WriteLine("     plancli --delete Id      Delete a task");
-        Console.WriteLine("     plancli -d               Prompt for a task Id to delete");
+        Console.WriteLine("     plancli -d Id            ");
+        Console.WriteLine("     plancli --delete Id      ");
+        Console.WriteLine("     plancli -d               Prompts for a task Id");
         AnsiConsole.MarkupLine("[green]Reset tasks list:[/]");
-        Console.WriteLine("     plancli -r               Reset tasks list");
-        Console.WriteLine("     plancli --reset          Reset tasks list");
+        Console.WriteLine("     plancli -r               ");
+        Console.WriteLine("     plancli --reset          ");
         AnsiConsole.MarkupLine("[green]Prints plancli version:[/]");
-        Console.WriteLine("     plancli -v               Prints plancli version");
-        Console.WriteLine("     plancli --version        Prints plancli version");
+        Console.WriteLine("     plancli -v               ");
+        Console.WriteLine("     plancli --version        ");
     }
 }
