@@ -117,9 +117,10 @@ class Arguments
             AnsiConsole.MarkupLine($"[red]Task Id {Id} wasn't found![/]");
             return;
         }
-        task.IsDone = true;
+        task.IsDone = !task.IsDone;
         db.Save();
-        AnsiConsole.MarkupLine($"[green]Task {Id} completed successfully[/]");
+        string action = task.IsDone ? "completed" : "unchecked";
+        AnsiConsole.MarkupLine($"[green]Task {Id} {action} successfully[/]");
     }
 
     static void HandleEdit(string[] args, DatabaseController db)

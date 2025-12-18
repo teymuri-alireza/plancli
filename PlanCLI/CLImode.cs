@@ -24,7 +24,7 @@ public class CLImode
                     .PageSize(7)
                     .MoreChoicesText("[grey](Move up and down)[/]")
                     .AddChoices(new[] {
-                        "List tasks", "Add new", "Complete task",
+                        "List tasks", "Add new", "Complete/Uncheck task",
                         "Edit task", "Delete task", "Reset tasks", "exit"
                 }));
             switch (option)
@@ -35,7 +35,7 @@ public class CLImode
                 case "Add new":
                     AddTask(db);
                     break;
-                case "Complete task":
+                case "Complete/Uncheck task":
                     CompleteTask(db);
                     break;
                 case "Delete task":
@@ -188,9 +188,10 @@ public class CLImode
                 var item = db.Items.FirstOrDefault(t => t.Id == int.Parse(choice));
                 if (!string.IsNullOrEmpty(item?.Title))
                 {
-                    item.IsDone = true;
+                    item.IsDone = !item.IsDone;
                     db.Save();
-                    AnsiConsole.MarkupLine($"[green]Task {item.Id} completed successfully[/]");
+                    string action = item.IsDone ? "completed" : "unchecked";
+                    AnsiConsole.MarkupLine($"[green]Task {item.Id} {action} successfully[/]");
                 }
                 else
                 {
