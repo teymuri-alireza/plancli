@@ -21,7 +21,7 @@ class Program
             File.WriteAllText(taskPath, "[]");
         }
         if (!File.Exists(settingPath)) {
-            File.WriteAllText(settingPath, "{\"Theme\": \"dark\", \"Mode\":\"not set\"}");
+            File.WriteAllText(settingPath, "{\"Theme\": \"dark\", \"Mode\":\"cli\"}");
         }
 
         var db = new DatabaseController(taskPath);
