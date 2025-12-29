@@ -1,18 +1,18 @@
 # PlanCLI
-A cross-platform terminal-based to-do list application written in C#, built using both **Terminal.GUI** and **Spectre.Console**
+A cross-platform terminal-based to-do list application written in C#, built using **Spectre.Console**
 
 # Features
 
-1. Supports both TUI mode and CLI mode
-2. JSON-based local database for storing tasks.
-3. Clean, minimal terminal interface.
-4. Cross-platform support (Windows, Linux, macOS).
+<!-- 1. Supports both TUI mode and CLI mode -->
+1. JSON-based local database for storing tasks.
+2. Clean, minimal terminal interface.
+3. Cross-platform support (Windows, Linux, macOS).
 
 # Planned Features
 
-- [ ] Add open-calendar button for deadline column (requires Terminal.GUI version > 2).
+<!-- - [ ] Add open-calendar button for deadline column (requires Terminal.GUI version > 2).
 - [ ] Add mouse hadnler for deadline field (requires Terminal.GUI version > 2).
-- [ ] Update Terminal.GUI dependency to version > 2
+- [ ] Update Terminal.GUI dependency to version > 2 -->
 - [x] Add deadline column to tasks table.
 - [x] Publish standalone executable files
 - [x] Add theme customization menu.
@@ -49,7 +49,7 @@ plancli --version
 
 # Usage
 
-Run the following command to initialize setting
+Run the application
 ```bash
 plancli
 ```
@@ -66,11 +66,6 @@ Contributions are welcome!
 If you have an idea or improvement open an issue or submit a pull request using **Conventional Commits** for commit messages.
 
 
-<!-- # Gallery
+# Note
 
-- CLI mode & TUI mode
-
-<div align="left">
-    <img width="50%" src="./images/climode.png">
-    <img width="50%" src="./images/tuimode.png">
-</div> -->
+This application used to have both TUI and CLI modes. For some reasons the TUI mode has been disabled. The CLI has set to dafault mode.
