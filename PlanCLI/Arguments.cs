@@ -16,10 +16,10 @@ class Arguments
             case "-hh":
                 PrintLongHelp();
                 break;
-            case "-m":
-            case "--mode":
-                ModeHandler(args);
-                break;
+            // case "-m":
+            // case "--mode":
+            //     ModeHandler(args);
+            //     break;
             case "-l":
             case "--list":
                 CLImode.ListTasks(db);
@@ -54,28 +54,28 @@ class Arguments
         }
     }
 
-    static void ModeHandler(string[] args)
-    {
-        if (args.Length < 2)
-        {
-            AnsiConsole.MarkupLine("[red]Missing mode value. Usage: --mode (cli|tui)[/]");
-            return;
-        }
-        switch (args [1])
-        {
-            case "cli":
-                ChangeUserMode("cli");
-                CLImode.Run();
-                break;
-            case "tui":
-                ChangeUserMode("tui");
-                TUImode.Run();
-                break;
-            default:
-                PrintHelp();
-                break;
-        }
-    }
+    // static void ModeHandler(string[] args)
+    // {
+    //     if (args.Length < 2)
+    //     {
+    //         AnsiConsole.MarkupLine("[red]Missing mode value. Usage: --mode (cli|tui)[/]");
+    //         return;
+    //     }
+    //     switch (args [1])
+    //     {
+    //         case "cli":
+    //             ChangeUserMode("cli");
+    //             CLImode.Run();
+    //             break;
+    //         case "tui":
+    //             ChangeUserMode("tui");
+    //             TUImode.Run();
+    //             break;
+    //         default:
+    //             PrintHelp();
+    //             break;
+    //     }
+    // }
 
     static void HandleAddTask(string[] args, DatabaseController db)
     {
@@ -187,9 +187,9 @@ class Arguments
     public static void PrintHelp()
     {
         AnsiConsole.MarkupLine("[green]plancli usage:[/]");
-        Console.WriteLine("     plancli              Run in default mode if it's set");
-        Console.WriteLine("     plancli -m cli       Set default to Command-Line mode (CLI)");
-        Console.WriteLine("     plancli -m tui       Set default to interactive mode (TUI)");
+        Console.WriteLine("     plancli              Run the cli application");
+        // Console.WriteLine("     plancli -m cli       Set default to Command-Line mode (CLI)");
+        // Console.WriteLine("     plancli -m tui       Set default to interactive mode (TUI)");
         AnsiConsole.MarkupLine("[green]Other arguments to handle tasks:[/]");
         Console.WriteLine("     plancli -l           Print the task list");
         Console.WriteLine("     plancli -a \"title\"   Add new task");
@@ -203,11 +203,11 @@ class Arguments
     }
     public static void PrintLongHelp()
     {
-        AnsiConsole.MarkupLine("[green]Changin mode:[/]");
-        Console.WriteLine("     plancli -m cli           Set default to Command-Line mode (CLI)");
-        Console.WriteLine("     plancli --mode cli       ");
-        Console.WriteLine("     plancli -m tui           Set default to interactive mode (TUI)");
-        Console.WriteLine("     plancli --mode tui       ");
+        // AnsiConsole.MarkupLine("[green]Changin mode:[/]");
+        // Console.WriteLine("     plancli -m cli           Set default to Command-Line mode (CLI)");
+        // Console.WriteLine("     plancli --mode cli       ");
+        // Console.WriteLine("     plancli -m tui           Set default to interactive mode (TUI)");
+        // Console.WriteLine("     plancli --mode tui       ");
 
         AnsiConsole.MarkupLine("[green]Print list of tasks:[/]");
         Console.WriteLine("     plancli -l               ");

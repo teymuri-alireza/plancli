@@ -1,3 +1,6 @@
+// This mode has been disabled for easer access and workflow
+// The only default mode is CLI
+
 using Terminal.Gui;
 using PlanCLI.Models;
 using System.Text.Json;

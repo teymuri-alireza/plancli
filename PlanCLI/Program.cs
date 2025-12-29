@@ -32,58 +32,63 @@ class Program
             Arguments.HandleArgs(args, db);
             return;
         }
-        var userMode = GetUserSetting()[1];
-        switch (userMode)
+        else
         {
-            case "cli":
-                CLImode.Run();
-                break;
-            case "tui":
-                TUImode.Run();
-                break;
-            case "not set":
-                SetupApp();
-                break;
-            default:
-                Arguments.PrintHelp();
-                break;
+            CLImode.Run();
+            return;
         }
+        // var userMode = GetUserSetting()[1];
+        // switch (userMode)
+        // {
+        //     case "cli":
+        //         CLImode.Run();
+        //         break;
+        //     case "tui":
+        //         TUImode.Run();
+        //         break;
+        //     case "not set":
+        //         SetupApp();
+        //         break;
+        //     default:
+        //         Arguments.PrintHelp();
+        //         break;
+        // }
     }
 
-    static void SetupApp()
-    {
-        // initializing settings and app's mode
-        AnsiConsole.MarkupLine("[green]Welcome to plancli. Let's setup the setttings.[/]");
-        while (true)
-        {
-            var setMode = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                .Title("Choose default mode for next use:")
-                .PageSize(3)
-                .MoreChoicesText("[grey](Move up and down)[/]")
-                .AddChoices(new [] { "cli", "tui" })
-            );
-            switch (setMode)
-            {
-                case "cli":
-                    AnsiConsole.MarkupLine("[green]Setting default mode to cli[/]");
-                    Arguments.ChangeUserMode("cli");
-                    AnsiConsole.MarkupLine("[green]Starting app...[/]\n");
-                    Thread.Sleep(1500);
-                    CLImode.Run();
-                    return;
-                case "tui":
-                    AnsiConsole.MarkupLine("[green]Setting default mode to tui[/]");
-                    Arguments.ChangeUserMode("tui");
-                    AnsiConsole.MarkupLine("[green]Starting app...[/]\n");
-                    Thread.Sleep(1500);
-                    TUImode.Run();
-                    return;
-                default:
-                    break;
-            }
-        }
-    }
+    // static void SetupApp()
+    // {
+    //     // initializing settings and app's mode
+    //     AnsiConsole.MarkupLine("[green]Welcome to plancli. Let's setup the setttings.[/]");
+    //     while (true)
+    //     {
+    //         var setMode = AnsiConsole.Prompt(
+    //             new SelectionPrompt<string>()
+    //             .Title("Choose default mode for next use:")
+    //             .PageSize(3)
+    //             .MoreChoicesText("[grey](Move up and down)[/]")
+    //             .AddChoices(new [] { "cli", "tui" })
+    //         );
+    //         switch (setMode)
+    //         {
+    //             case "cli":
+    //                 AnsiConsole.MarkupLine("[green]Setting default mode to cli[/]");
+    //                 Arguments.ChangeUserMode("cli");
+    //                 AnsiConsole.MarkupLine("[green]Starting app...[/]\n");
+    //                 Thread.Sleep(1500);
+    //                 CLImode.Run();
+    //                 return;
+    //             case "tui":
+    //                 AnsiConsole.MarkupLine("[green]Setting default mode to tui[/]");
+    //                 Arguments.ChangeUserMode("tui");
+    //                 AnsiConsole.MarkupLine("[green]Starting app...[/]\n");
+    //                 Thread.Sleep(1500);
+    //                 TUImode.Run();
+    //                 return;
+    //             default:
+    //                 break;
+    //         }
+    //     }
+    // }
     public static string GetConfigDirectory()
     {
         string basePath;
