@@ -1,4 +1,7 @@
 # PlanCLI
+
+**⚠️ This project is archived and no longer maintained.**
+
 A cross-platform terminal-based to-do list application written in C#, built using **Spectre.Console**
 
 # Features
